@@ -1,7 +1,8 @@
 
 data segment
-abc dd 87654321h
-def dd 11111111h
+abc dw 8765h, 4321h
+def dw 1111h, 1411h
+result dw 3 dup (?) 
 data ends
  
 code segment
@@ -9,19 +10,20 @@ assume cs:code, ds:data
 start:
 mov ax,data
 mov ds,ax
-mov dl,00h
-mov ax, word ptr abc
-mov bx, word ptr def
+mov dx,00h
+mov ax, abc+2
+mov bx, def+2
 sub ax,bx
+mov result, ax
 
-mov si,ax
-
-mov ax, word ptr abc+2
-mov bx, word ptr def+2
+mov ax, abc
+mov bx, def
 sbb ax,bx
 
-mov di,ax
-mov ax,0000h
+mov result+2,ax
+sbb dx,00h
+mov result+4,dx
+mov ah,4ch
 
 int 3
 code ends
